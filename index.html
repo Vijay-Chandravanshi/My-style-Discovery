@@ -23,6 +23,16 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Template Backgrounds */
+        .bg-dot-grid {
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .bg-lined {
+            background-image: linear-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 100% 24px;
+        }
+
         /* Print Optimization */
         @media print {
             .no-print { display: none !important; }
@@ -188,10 +198,25 @@
                 energy: "Overloaded. Busy. Pressured.",
                 goal: "Order. Prioritization. Mental Space.",
                 description: "The Architect does not write paragraphs; the Architect builds structure. Instead of explaining everything in detail, you extract the essentials. This lens is not cold; it is stabilizing.",
+                funFact: "The 'Zeigarnik Effect' states that uncompleted tasks occupy 'cognitive RAM'. Writing them down in a structured list literally frees up your brain's processing power.",
                 challenge: {
                     title: "The Extraction Method",
                     desc: "Don't write sentences. List: <br>1. Stress level (1-10)<br>2. Trigger (What happened)<br>3. Emotion (One word)<br>4. Action (One step)<br>Use this to close the open tabs in your mind."
-                }
+                },
+                template: `
+                    <div class="bg-dot-grid p-6 rounded-lg border border-slate-200 h-full font-mono text-sm text-slate-600">
+                        <div class="border-b-2 border-slate-800 pb-2 mb-4 flex justify-between">
+                            <span class="font-bold text-slate-900">DATE: [Today]</span>
+                            <span class="font-bold text-slate-900">TYPE: LOG</span>
+                        </div>
+                        <ul class="space-y-3">
+                            <li class="flex gap-2"><span class="font-bold text-slate-800">• STRESS:</span> 8/10</li>
+                            <li class="flex gap-2"><span class="font-bold text-slate-800">• TRIGGER:</span> Meeting conflict</li>
+                            <li class="flex gap-2"><span class="font-bold text-slate-800">• EMOTION:</span> Small, Frustrated</li>
+                            <li class="flex gap-2"><span class="font-bold text-slate-800">• ACTION:</span> Send follow-up email</li>
+                        </ul>
+                    </div>
+                `
             },
             'Storyteller': {
                 title: "The Storyteller",
@@ -199,10 +224,16 @@
                 energy: "Restless. Anxious. Mentally Noisy.",
                 goal: "Emotional Processing. Internal Relief.",
                 description: "The Storyteller writes without interruption. No editing. No correcting. When thoughts stay in the mind, they recycle. When they hit paper, they slow down.",
+                funFact: "Studies by psychologist James Pennebaker show that 'expressive writing' for just 15 minutes can lower blood pressure and improve immune function by organizing traumatic memories.",
                 challenge: {
                     title: "The Unfiltered Flow",
-                    desc: "Set a timer for 10 minutes. Write exactly what you are thinking, even if it is 'I don't know what to write.' Do not lift your pen. You are not solving the storm; you are letting it pass through."
-                }
+                    desc: "Set the timer below. Write exactly what you are thinking, even if it is 'I don't know what to write.' Do not lift your pen. You are not solving the storm; you are letting it pass through."
+                },
+                template: `
+                    <div class="bg-lined p-6 rounded-lg border border-slate-200 h-full font-serif text-slate-600 leading-loose italic">
+                        <p>I'm feeling really restless today and I'm not sure why but maybe it was that comment earlier or just the lack of sleep but I just need to get this out of my head because it's looping and I want to feel calm...</p>
+                    </div>
+                `
             },
             'Artist': {
                 title: "The Artist",
@@ -210,10 +241,19 @@
                 energy: "Wordless. Creative. Emotionally Stuck.",
                 goal: "Expression. Symbolic Insight.",
                 description: "Sometimes you don't need sentences. You need symbols. A single symbol can hold what paragraphs struggle to explain. This is not art class; this is translation.",
+                funFact: "Dual-coding theory suggests that combining words with images increases deep learning. Leonardo da Vinci used this method to process complex ideas he couldn't yet articulate in words.",
                 challenge: {
                     title: "The Symbolic Translation",
                     desc: "Draw a battery for your energy. Draw a cloud for your heaviness. Draw a stick figure climbing something steep. It does not need to be beautiful. It needs to be honest."
-                }
+                },
+                template: `
+                    <div class="bg-white p-6 rounded-lg border-2 border-slate-200 border-dashed h-full flex flex-col items-center justify-center text-slate-400">
+                        <div class="mb-2"><i data-lucide="battery-warning" class="w-8 h-8"></i></div>
+                        <span class="text-xs uppercase font-bold tracking-widest">Energy Level</span>
+                        <div class="mt-6 mb-2"><i data-lucide="cloud-rain" class="w-8 h-8"></i></div>
+                        <span class="text-xs uppercase font-bold tracking-widest">Current Mood</span>
+                    </div>
+                `
             }
         };
 
@@ -236,6 +276,7 @@
 
         // State Management
         let currentStep = 0;
+        let timerInterval;
         let formData = {
             archetypeId: '', 
             goalPreference: '',
@@ -379,6 +420,29 @@
             lucide.createIcons();
         }
 
+        function startTimer() {
+            let timeLeft = 600; // 10 minutes in seconds
+            const timerDisplay = document.getElementById('timer-display');
+            const timerBtn = document.getElementById('timer-btn');
+            
+            timerBtn.style.display = 'none';
+            timerDisplay.classList.remove('hidden');
+            
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                
+                timerDisplay.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.innerText = "DONE";
+                }
+                timeLeft -= 1;
+            }, 1000);
+        }
+
         function generateResult() {
             formData.userGoal = document.getElementById('style-goal').value;
             const res = ARCHETYPES[formData.archetypeId] || ARCHETYPES['Architect'];
@@ -410,8 +474,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <p class="text-xs text-stone-400 italic mt-6">*Disclaimer: You do not need to choose this lens forever. You only need to choose it for today.</p>
                             </div>
                             
                             <div class="mt-auto pt-8">
@@ -419,8 +481,8 @@
                                     <div class="flex items-start gap-3">
                                         <i data-lucide="lightbulb" class="w-5 h-5 text-amber-500 mt-1"></i>
                                         <div>
-                                            <p class="text-[10px] font-black uppercase tracking-widest text-stone-400 mb-1">Fun Fact (Chapter 4)</p>
-                                            <p class="text-sm text-stone-600 font-medium">Leonardo da Vinci, Thomas Edison, and Einstein all used "Visual Journaling." Doodling actually improves memory retention by 29%.</p>
+                                            <p class="text-[10px] font-black uppercase tracking-widest text-stone-400 mb-1">Brain Fact</p>
+                                            <p class="text-sm text-stone-600 font-medium">${res.funFact}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -431,30 +493,36 @@
                         
                         <!-- The 10-Minute Challenge Card -->
                         <div class="bg-black text-white p-8 rounded-[2rem] space-y-4 shadow-xl print-black-text">
-                            <div class="flex items-center gap-2 text-amber-400">
-                                <i data-lucide="timer" class="w-5 h-5"></i>
-                                <h4 class="text-[10px] font-black uppercase tracking-widest">10-Minute Method</h4>
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-center gap-2 text-amber-400">
+                                    <i data-lucide="timer" class="w-5 h-5"></i>
+                                    <h4 class="text-[10px] font-black uppercase tracking-widest">10-Minute Method</h4>
+                                </div>
+                                <div class="text-right no-print">
+                                    <button id="timer-btn" onclick="startTimer()" class="bg-white text-black px-4 py-1 rounded-full text-xs font-bold hover:bg-stone-200 transition-colors">START TIMER</button>
+                                    <div id="timer-display" class="hidden text-3xl font-mono font-bold text-amber-400">10:00</div>
+                                </div>
                             </div>
                             <h3 class="text-2xl font-serif font-bold text-white print-black-text">${res.challenge.title}</h3>
-                            <p class="text-stone-300 leading-relaxed print-black-text">${res.challenge.desc}</p>
+                            <p class="text-stone-300 leading-relaxed print-black-text text-sm">${res.challenge.desc}</p>
                         </div>
 
-                        <!-- Post-Journaling Reflection (NEW) -->
+                        <!-- Sample Template View -->
                         <div class="bg-white p-8 rounded-[2rem] space-y-4 border border-stone-100">
-                            <h4 class="text-[10px] font-black uppercase tracking-widest text-stone-500">Post-Journaling Reflection</h4>
-                            <p class="text-sm text-stone-600">After your 10 minutes, ask yourself:</p>
-                            <div class="bg-stone-50 p-4 rounded-xl">
-                                <p class="font-serif italic text-lg text-stone-800 mb-2">"How did my energy shift?"</p>
-                                <textarea class="w-full bg-transparent border-b border-stone-200 focus:border-black outline-none h-16 text-sm resize-none" placeholder="Write a brief note here..."></textarea>
-                            </div>
+                             <h4 class="text-[10px] font-black uppercase tracking-widest text-stone-500">Sample Page Layout</h4>
+                             <div class="h-48 w-full">
+                                ${res.template}
+                             </div>
+                             <p class="text-xs text-stone-400 italic text-center mt-2">Structure your page like this for maximum clarity.</p>
                         </div>
 
-                        <div class="bg-amber-50 p-8 rounded-[2rem] border border-amber-100 space-y-4">
-                            <div class="flex items-center gap-2 text-amber-800">
-                                <i data-lucide="book-open" class="w-4 h-4"></i>
-                                <h4 class="text-[10px] font-black uppercase tracking-widest">Chapter Insight</h4>
+                        <!-- Post-Journaling Reflection -->
+                        <div class="bg-stone-50 p-6 rounded-[2rem] border border-stone-100">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-stone-400 mb-3">Post-Session Reflection</h4>
+                            <div class="bg-white p-4 rounded-xl border border-stone-200">
+                                <p class="font-serif italic text-base text-stone-800 mb-2">"How did my energy shift?"</p>
+                                <textarea class="w-full bg-transparent focus:border-black outline-none h-12 text-sm resize-none text-stone-600" placeholder="Jot down a quick note..."></textarea>
                             </div>
-                            <p class="text-amber-900 leading-relaxed font-medium italic">"A camera lens does not change the world. It changes how the world is captured. The page should adapt to you—not the other way around."</p>
                         </div>
                     </div>
                 </div>
