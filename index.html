@@ -34,6 +34,8 @@
             .bg-stone-900 { background-color: #1c1917 !important; color: white !important; -webkit-print-color-adjust: exact; }
             .bg-stone-50 { background-color: #f9f8f6 !important; -webkit-print-color-adjust: exact; }
             .bg-amber-50 { background-color: #fffbeb !important; -webkit-print-color-adjust: exact; }
+            .text-white { color: black !important; } 
+            .print-black-text { color: black !important; }
         }
     </style>
 </head>
@@ -199,7 +201,10 @@
                 keywords: ["Structured", "Efficient", "Logical", "Organized"],
                 essentials: ["Dot Grid Notebook", "Fine Liner Pen (0.5mm)", "Ruler or Stencil", "Highlighters"],
                 palette: ["#E5E5E5", "#171717", "#525252", "#D4D4D4"],
-                tip: "Don't force full sentences. Use symbols, indexes, and rapid logging to capture thoughts quickly without friction."
+                challenge: {
+                    title: "The 'Rapid Log' Challenge",
+                    desc: "Set a timer for 10 minutes. Create 3 distinct lists: 'Must Do', 'Want to Do', and 'Grateful For'. Spend exactly 3 minutes on each list, and 1 minute reviewing. Do not write full sentences."
+                }
             },
             'Storyteller': {
                 title: "The Storyteller",
@@ -207,7 +212,10 @@
                 keywords: ["Narrative", "Reflective", "Flowing", "Emotional"],
                 essentials: ["Lined Journal", "Fountain Pen", "Ribbon Marker", "Quality Cream Paper"],
                 palette: ["#FDF4FF", "#701A75", "#FAE8FF", "#86198F"],
-                tip: "Try 'Stream of Consciousness' writing. Set a timer for 10 minutes and write without lifting your pen to bypass your inner critic."
+                challenge: {
+                    title: "The 'Stream' Challenge",
+                    desc: "Set a timer for 10 minutes. Write the phrase 'Right now, I am feeling...' and keep your pen moving until the timer stops. Do not edit, do not correct grammar, and do not lift your pen."
+                }
             },
             'Artist': {
                 title: "The Artist",
@@ -215,7 +223,10 @@
                 keywords: ["Visual", "Expressive", "Unbound", "Creative"],
                 essentials: ["Blank Sketchbook", "Brush Pens", "Washi Tape", "Watercolors"],
                 palette: ["#FFFBEB", "#F59E0B", "#FEF3C7", "#D97706"],
-                tip: "Combine text and visuals. If you can't find the word for a feeling, draw a shape or use a color that represents it."
+                challenge: {
+                    title: "The 'Mood Mandala' Challenge",
+                    desc: "Set a timer for 10 minutes. Draw a large circle. Fill it completely with shapes, lines, and colors that represent your current energy. No words allowed."
+                }
             }
         };
 
@@ -456,16 +467,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-amber-50 p-8 rounded-[2rem] border border-amber-100 space-y-4">
-                            <div class="flex items-center gap-2 text-amber-800">
-                                <i data-lucide="sparkles" class="w-4 h-4"></i>
-                                <h4 class="text-[10px] font-black uppercase tracking-widest">Expert Tip</h4>
+                        
+                        <!-- NEW 10-Minute Challenge Card -->
+                        <div class="bg-black text-white p-8 rounded-[2rem] space-y-4 shadow-xl print-black-text">
+                            <div class="flex items-center gap-2 text-amber-400">
+                                <i data-lucide="timer" class="w-5 h-5"></i>
+                                <h4 class="text-[10px] font-black uppercase tracking-widest">Your 10-Minute Micro-Habit</h4>
                             </div>
-                            <p class="text-amber-900 leading-relaxed font-medium italic">"${res.tip}"</p>
+                            <h3 class="text-2xl font-serif font-bold text-white print-black-text">${res.challenge.title}</h3>
+                            <p class="text-stone-300 leading-relaxed print-black-text">${res.challenge.desc}</p>
                         </div>
-                        <div class="bg-stone-900 text-white p-8 rounded-[2rem] space-y-4">
+
+                        <div class="bg-white p-8 rounded-[2rem] space-y-4 border border-stone-100">
                             <h4 class="text-[10px] font-black uppercase tracking-widest text-stone-500">Your Intention</h4>
-                            <p class="text-xl font-serif italic text-stone-100">"${formData.goal || "To capture the fleeting moments of life with intention."}"</p>
+                            <p class="text-xl font-serif italic text-stone-800">"${formData.goal || "To capture the fleeting moments of life with intention."}"</p>
                         </div>
 
                         <div class="bg-white p-6 rounded-[2rem] border-2 border-stone-100 flex items-center gap-4 hover:border-black transition-all cursor-pointer group shadow-sm">
