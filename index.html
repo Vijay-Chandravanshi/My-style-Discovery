@@ -428,17 +428,22 @@
             const container = document.getElementById('result-container');
             container.innerHTML = `
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <div class="lg:col-span-7 bg-stone-50 rounded-[2.5rem] p-10 md:p-14 border border-stone-100 relative overflow-hidden">
+                    <div class="lg:col-span-7 bg-stone-50 rounded-[2.5rem] p-10 md:p-14 border border-stone-100 relative overflow-hidden flex flex-col">
                         <div class="absolute top-0 right-0 p-10 opacity-[0.03] scale-150"><i data-lucide="sparkles" class="w-64 h-64"></i></div>
-                        <div class="relative z-10 space-y-8">
-                            <div class="inline-flex items-center gap-3 px-4 py-2 bg-white rounded-full text-[10px] font-black uppercase tracking-widest border border-stone-200">
-                                <i data-lucide="check-circle-2" class="w-4 h-4 text-green-500"></i> Result Confirmed
+                        <div class="relative z-10 space-y-8 h-full flex flex-col">
+                            <div>
+                                <div class="inline-flex items-center gap-3 px-4 py-2 bg-white rounded-full text-[10px] font-black uppercase tracking-widest border border-stone-200 mb-6">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-green-500"></i> Result Confirmed
+                                </div>
+                                <h2 class="text-6xl font-serif font-medium leading-tight tracking-tighter mb-4">${res.title}</h2>
+                                <p class="text-xl text-stone-600 leading-relaxed font-light mb-2">${res.description}</p>
+                                <p class="text-xs text-stone-400 italic">*Disclaimer: No personality is permanent. Your style evolves as you do.</p>
                             </div>
-                            <h2 class="text-6xl font-serif font-medium leading-tight tracking-tighter">${res.title}</h2>
-                            <p class="text-xl text-stone-600 leading-relaxed font-light">${res.description}</p>
+
                             <div class="pt-4 flex flex-wrap gap-2">
                                 ${res.keywords.map(kw => `<span class="px-5 py-2 bg-black text-white rounded-full text-xs font-bold uppercase tracking-widest">${kw}</span>`).join('')}
                             </div>
+
                             <div class="pt-8 border-t border-stone-200">
                                 <h4 class="text-[10px] font-black uppercase tracking-widest text-stone-400 mb-6">Wardrobe Essentials</h4>
                                 <div class="grid grid-cols-2 gap-4">
@@ -448,6 +453,18 @@
                                             <span class="text-sm font-medium">${item}</span>
                                         </div>
                                     `).join('')}
+                                </div>
+                            </div>
+                            
+                            <div class="mt-auto pt-8">
+                                <div class="bg-white/60 p-5 rounded-2xl border border-stone-100 backdrop-blur-sm">
+                                    <div class="flex items-start gap-3">
+                                        <i data-lucide="lightbulb" class="w-5 h-5 text-amber-500 mt-1"></i>
+                                        <div>
+                                            <p class="text-[10px] font-black uppercase tracking-widest text-stone-400 mb-1">Fun Fact</p>
+                                            <p class="text-sm text-stone-600 font-medium">"Enclothed Cognition" is a phenomenon where the clothes you wear can actually systematically influence your psychological processes and performance.</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -482,6 +499,16 @@
                         <div class="bg-stone-900 text-white p-8 rounded-[2rem] space-y-4">
                             <h4 class="text-[10px] font-black uppercase tracking-widest text-stone-500">Mantra</h4>
                             <p class="text-xl font-serif italic text-stone-100">"${formData.goal || "Curating a life of intentional beauty and timeless confidence."}"</p>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-[2rem] border-2 border-stone-100 flex items-center gap-4 hover:border-black transition-all cursor-pointer group shadow-sm">
+                            <div class="bg-stone-50 p-4 rounded-2xl group-hover:bg-black group-hover:text-white transition-colors">
+                                <i data-lucide="book-open" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-black uppercase tracking-widest text-stone-400">Recommended Reading</p>
+                                <p class="font-serif font-bold text-lg leading-tight mt-1">Just 10 Minutes with Pen and Paper</p>
+                            </div>
                         </div>
                     </div>
                 </div>
